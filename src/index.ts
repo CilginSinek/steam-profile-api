@@ -208,7 +208,7 @@ class steamUser {
               }
             };
 
-            const achievemts: string | null = achievemtsDef();
+            const achievements: string | null = achievemtsDef();
 
             const badge: badge | null = badgeDef();
 
@@ -219,7 +219,7 @@ class steamUser {
               playtime_forever: playtime_forever,
               last_play: last_play,
               badge: badge,
-              achievemts: achievemts,
+              achievements: achievements,
             };
           } else {
             const gameName: string = this.$(".profile_in_game_name")
@@ -265,14 +265,12 @@ class steamUser {
       const avatar: string = this.$(".playerAvatarAutoSizeInner")
         .children()
         .attr("src");
-
       const countryDef = () => {
         const countryString: string = this.$(".header_real_name.ellipsis")
           .text()
           .trim()
-          .split("\n")
-          .join("")
-          .split('"')[3];
+          .split("\n")[3]
+          .split("\t\t\t\t\t\t\t\t\t\t\t\t")[1]
         if (countryString) {
           return countryString;
         } else {
@@ -286,11 +284,12 @@ class steamUser {
 
       const badgesDef = () => {
         const badgeDivs = this.$(".profile_badges_badge");
-        if (badgeDivs) {
+        if (badgeDivs.length > 0) {
           const badgeArray: Array<badge["iconLink"]> = [];
+          const myCheerio = this.$
 
-          badgeDivs.forEach((item: any) => {
-            const badgeIcon: string = item.children().children().attr("src");
+          badgeDivs.each(function(_i: any,item: any) {
+            const badgeIcon: string = myCheerio(this).children().children().attr("src");
             badgeArray.push(badgeIcon);
           });
           return badgeArray;
@@ -369,9 +368,9 @@ class steamUser {
         const gameArray: Array<gameInfo> = [];
 
         const gameDivs = this.$(".recent_game_content");
-
-        gameDivs.forEach((item: any) => {
-          const name: string = item
+        const myCheerio = this.$
+        gameDivs.each(function(_i:any,item: any){
+          const name: string = myCheerio(this)
             .children()
             .first()
             .children(".game_name")
@@ -379,7 +378,7 @@ class steamUser {
             .trim();
 
           const appid: number = parseInt(
-            item
+            myCheerio(this)
               .children()
               .first()
               .children(".game_name")
@@ -389,7 +388,7 @@ class steamUser {
               .at(-1)
           );
 
-          const iconLink: string = item
+          const iconLink: string = myCheerio(this)
             .children()
             .first()
             .children()
@@ -398,7 +397,7 @@ class steamUser {
             .children()
             .attr("src");
 
-          const details: Array<string> = item
+          const details: Array<string> = myCheerio(this)
             .children()
             .first()
             .children(".game_info_details")
@@ -412,12 +411,12 @@ class steamUser {
           const last_play: string = details[1];
 
           const badgeDef = () => {
-            if (item.children(".game_info_stats")) {
+            if (myCheerio(this).children(".game_info_stats")) {
               const badgeExist =
-                item.children(".game_info_stats").children() == 3;
+              myCheerio(this).children(".game_info_stats").children() == 3;
               if (badgeExist) {
                 //* class="game_info_badge"
-                const badgeDiv = item
+                const badgeDiv = myCheerio(this)
                   .children(".game_info_stats")
                   .children()
                   .first()
@@ -458,7 +457,7 @@ class steamUser {
           };
 
           const achievemtsDef = () => {
-            const statsDiv = item.children(".game_info_stats");
+            const statsDiv = myCheerio(this).children(".game_info_stats");
 
             if (statsDiv) {
               //* get stats first div for check any achievements
@@ -502,7 +501,7 @@ class steamUser {
             playtime_forever: playtime_forever,
             last_play: last_play,
             badge: badge,
-            achievemts: achievements,
+            achievements: achievements,
           };
 
           gameArray.push(gameInfo);
@@ -667,7 +666,7 @@ class steamUser {
           playtime_forever: playtime_forever,
           last_play: last_play,
           badge: badge,
-          achievemts: achievements,
+          achievements: achievements,
         };
         return gameInfo;
       } else {
@@ -722,9 +721,11 @@ class steamUser {
       }
       const status = this.getStatus();
       const userInfo = this.getUserInfo();
+      const recentGames = this.getRecentGames();
       const profile = {
         status,
         userInfo,
+        recentGames,
       };
       return profile;
     } catch (error) {

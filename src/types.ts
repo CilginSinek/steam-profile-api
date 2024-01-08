@@ -5,7 +5,7 @@ interface gameInfo {
   playtime_forever: string;
   last_play: string | null;
   badge: badge | null;
-  achievemts: string | null;
+  achievements: string | null;
 }
 interface badge {
   name: string;
@@ -53,6 +53,7 @@ interface UserComponents {
 interface User {
   status: statusType;
   userInfo: userInfo;
+  recentGames: Array<gameInfo>| null;
 }
 interface CostumeComponent {
   UserComponents: UserComponents;

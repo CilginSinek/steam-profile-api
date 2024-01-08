@@ -6,23 +6,29 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-      "dist"
-   ],
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
-    "repository": {
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/CilginSinek/steam-profile-api"
   },
-  "publishConfig":{
+  "publishConfig": {
     "access": "public",
     "registry": "https://npm.pkg.github.com/"
   },
   "author": "CilginSinek",
   "license": "MIT",
   "devDependencies": {
+    "@babel/preset-env": "^7.23.7",
+    "@babel/preset-typescript": "^7.23.3",
+    "@jest/globals": "^29.7.0",
+    "axios": "^1.6.5",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
   },
