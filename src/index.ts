@@ -413,7 +413,7 @@ class steamUser {
           const badgeDef = () => {
             if (myCheerio(this).children(".game_info_stats")) {
               const badgeExist =
-              myCheerio(this).children(".game_info_stats").children() == 3;
+              myCheerio(this).children(".game_info_stats").children().first().attr("class") == "game_info_achievements_badge";
               if (badgeExist) {
                 //* class="game_info_badge"
                 const badgeDiv = myCheerio(this)
@@ -581,16 +581,16 @@ class steamUser {
 
         const badgeDef = (): badge | null => {
           const badgeDiv = gameDiv
-            .children("game_info_stats")
+            .children(".game_info_stats")
             .children()
             .first()
             .children(".game_info_badge_border");
 
           if (badgeDiv) {
             const badgeName: string = badgeDiv
-              .children(".game_info_badge_description")
               .children()
-              .first()
+              .children(".game_info_badge_description")
+              .children(".name")
               .text()
               .trim();
 
@@ -604,10 +604,11 @@ class steamUser {
               .attr("src");
 
             const badgeXp: string = badgeDiv
-              .children(".game_info_badge_description")
-              .children(".xp")
-              .text()
-              .trim();
+            .children()
+            .children(".game_info_badge_description")
+            .children(".xp")
+            .text()
+            .trim();
 
             return {
               name: badgeName,
@@ -620,7 +621,7 @@ class steamUser {
         };
 
         const achievemtsDef = () => {
-          const statsDiv = this.$("favoritegame_showcase").children(
+          const statsDiv = this.$(".favoritegame_showcase").children(
             ".game_info_stats"
           );
 
@@ -751,7 +752,7 @@ class steamUser {
         this.res = x;
         this.$ = load(this.res);
       }
-      if (this.$) {
+      if (!this.$) {
         throw new Error("Steam html not found");
       }
       const funcObj: UserObj = {
@@ -839,8 +840,8 @@ class steamUser {
         }
       };
       const components: CostumeComponent = {
-        ShowCaseComponents: showcaseDef(),
         UserComponents: userSelectDef(),
+        ShowCaseComponents: showcaseDef()
       };
 
       return components;
