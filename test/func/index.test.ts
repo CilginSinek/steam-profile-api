@@ -13,7 +13,9 @@ import testJson from "../testJson";
 
 describe("Steam API tests", () => {
   test("Steam API availability", async () => {
-    const response = await axios.get("https://steamcommunity.com/id/CilginSinek");
+    const response = await axios.get(
+      "https://steamcommunity.com/id/CilginSinek"
+    );
     expect(response.status).toBe(200);
     if (response.status === 200) {
       const status = getStatus(response.data);

@@ -53,7 +53,7 @@ interface UserComponents {
 interface User {
   status: statusType;
   userInfo: userInfo;
-  recentGames: Array<gameInfo>| null;
+  recentGames: Array<gameInfo> | null;
 }
 interface CostumeComponent {
   UserComponents: UserComponents;
