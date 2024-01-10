@@ -54,15 +54,26 @@ class steamUser {
    */
   getStatus(x?: string): statusType {
     try {
-      if (x) {
-        this.res = x;
-        this.$ = load(this.res);
+      const $def = () =>{
+        if(x){
+          if(this !== undefined){
+            this.res = x;
+            this.$ = load(this.res);
+            return this.$;
+          }else{
+            return load(x);
+          }
+        }else if (this.$) {
+          return this.$;
+        } else {
+          throw new Error("Steam html not found");
+        }
       }
-      if (!this.$) {
-        throw new Error("Steam html not found");
-      }
-      const statusDiv = this.$(".responsive_status_info").children();
-      const statusText: string = this.$(".profile_in_game_header").text();
+      const $ = $def();
+
+
+      const statusDiv = $(".responsive_status_info").children();
+      const statusText: string = $(".profile_in_game_header").text();
 
       const typeDef = () => {
         if (statusDiv.attr("class").includes("in-game")) {
@@ -79,9 +90,9 @@ class steamUser {
         //* if user is in-game
         if (statusDiv.attr("class").includes("in-game")) {
           //* if user has recent games
-          if (this.$(".recent_games")) {
+          if ($(".recent_games")) {
             //* first child of .recent_games
-            const recentGame = this.$(".recent_games")
+            const recentGame = $(".recent_games")
               .children()
               .first()
               .children();
@@ -222,7 +233,7 @@ class steamUser {
               achievements: achievements,
             };
           } else {
-            const gameName: string = this.$(".profile_in_game_name")
+            const gameName: string = $(".profile_in_game_name")
               .text()
               .trim();
             return gameName;
@@ -253,20 +264,30 @@ class steamUser {
    */
   getUserInfo(x?: string): userInfo {
     try {
-      if (x) {
-        this.res = x;
-        this.$ = load(this.res);
+      const $def = () =>{
+        if(x){
+          if(this !== undefined){
+            this.res = x;
+            this.$ = load(this.res);
+            return this.$;
+          }else{
+            return load(x);
+          }
+        }else if (this.$) {
+          return this.$;
+        } else {
+          throw new Error("Steam html not found");
+        }
       }
-      if (!this.$) {
-        throw new Error("Steam html not found");
-      }
-      const name: string = this.$("bdi").first().text();
-      const nickname: string = this.$(".actual_persona_name").first().text();
-      const avatar: string = this.$(".playerAvatarAutoSizeInner")
+      const $ = $def();
+
+      const name: string = $("bdi").first().text();
+      const nickname: string = $(".actual_persona_name").first().text();
+      const avatar: string = $(".playerAvatarAutoSizeInner")
         .children()
         .attr("src");
       const countryDef = () => {
-        const countryString: string = this.$(".header_real_name.ellipsis")
+        const countryString: string = $(".header_real_name.ellipsis")
           .text()
           .trim()
           .split("\n")[3]
@@ -280,16 +301,15 @@ class steamUser {
 
       const country: string | null = countryDef();
 
-      const description: string = this.$(".profile_summary").text().trim();
+      const description: string = $(".profile_summary").text().trim();
 
       const badgesDef = () => {
-        const badgeDivs = this.$(".profile_badges_badge");
+        const badgeDivs = $(".profile_badges_badge");
         if (badgeDivs.length > 0) {
           const badgeArray: Array<badge["iconLink"]> = [];
-          const myCheerio = this.$
 
           badgeDivs.each(function(_i: any,item: any) {
-            const badgeIcon: string = myCheerio(this).children().children().attr("src");
+            const badgeIcon: string = $(this).children().children().attr("src");
             badgeArray.push(badgeIcon);
           });
           return badgeArray;
@@ -300,7 +320,7 @@ class steamUser {
       const badges: Array<badge["iconLink"]> | null = badgesDef();
 
       const mainBadgeDef = () => {
-        const badgeDiv = this.$(".favorite_badge");
+        const badgeDiv = $(".favorite_badge");
         if (badgeDiv) {
           const badgeIcon: string = badgeDiv
             .children()
@@ -330,7 +350,7 @@ class steamUser {
       const mainBadge: badge | null = mainBadgeDef();
 
       const level: number = parseInt(
-        this.$(".persona_level").children().first().text().trim()
+        $(".persona_level").children().first().text().trim()
       );
 
       const userInfo: userInfo = {
@@ -357,20 +377,29 @@ class steamUser {
    */
   getRecentGames(x?: string): Array<gameInfo> | null {
     try {
-      if (x) {
-        this.res = x;
-        this.$ = load(this.res);
+      const $def = () =>{
+        if(x){
+          if(this !== undefined){
+            this.res = x;
+            this.$ = load(this.res);
+            return this.$;
+          }else{
+            return load(x);
+          }
+        }else if (this.$) {
+          return this.$;
+        } else {
+          throw new Error("Steam html not found");
+        }
       }
-      if (!this.$) {
-        throw new Error("Steam html not found");
-      }
-      if (this.$(".recent_game_content")) {
+      const $ = $def();
+
+      if ($(".recent_game_content")) {
         const gameArray: Array<gameInfo> = [];
 
-        const gameDivs = this.$(".recent_game_content");
-        const myCheerio = this.$
+        const gameDivs = $(".recent_game_content");
         gameDivs.each(function(_i:any,item: any){
-          const name: string = myCheerio(this)
+          const name: string = $(this)
             .children()
             .first()
             .children(".game_name")
@@ -378,7 +407,7 @@ class steamUser {
             .trim();
 
           const appid: number = parseInt(
-            myCheerio(this)
+            $(this)
               .children()
               .first()
               .children(".game_name")
@@ -388,7 +417,7 @@ class steamUser {
               .at(-1)
           );
 
-          const iconLink: string = myCheerio(this)
+          const iconLink: string = $(this)
             .children()
             .first()
             .children()
@@ -397,7 +426,7 @@ class steamUser {
             .children()
             .attr("src");
 
-          const details: Array<string> = myCheerio(this)
+          const details: Array<string> = $(this)
             .children()
             .first()
             .children(".game_info_details")
@@ -411,12 +440,12 @@ class steamUser {
           const last_play: string = details[1];
 
           const badgeDef = () => {
-            if (myCheerio(this).children(".game_info_stats")) {
+            if ($(this).children(".game_info_stats")) {
               const badgeExist =
-              myCheerio(this).children(".game_info_stats").children().first().attr("class") == "game_info_achievements_badge";
+              $(this).children(".game_info_stats").children().first().attr("class") == "game_info_achievements_badge";
               if (badgeExist) {
                 //* class="game_info_badge"
-                const badgeDiv = myCheerio(this)
+                const badgeDiv = $(this)
                   .children(".game_info_stats")
                   .children()
                   .first()
@@ -457,7 +486,7 @@ class steamUser {
           };
 
           const achievemtsDef = () => {
-            const statsDiv = myCheerio(this).children(".game_info_stats");
+            const statsDiv = $(this).children(".game_info_stats");
 
             if (statsDiv) {
               //* get stats first div for check any achievements
@@ -524,14 +553,24 @@ class steamUser {
    */
   getFavoriteGame(x?: string): gameInfo | null {
     try {
-      if (x) {
-        this.res = x;
-        this.$ = load(this.res);
+      const $def = () =>{
+        if(x){
+          if(this !== undefined){
+            this.res = x;
+            this.$ = load(this.res);
+            return this.$;
+          }else{
+            return load(x);
+          }
+        }else if (this.$) {
+          return this.$;
+        } else {
+          throw new Error("Steam html not found");
+        }
       }
-      if (!this.$) {
-        throw new Error("Steam html not found");
-      }
-      const gameDiv = this.$(".favoritegame_showcase");
+      const $ = $def();
+
+      const gameDiv = $(".favoritegame_showcase");
       if (gameDiv) {
         const name: string = gameDiv
           .children()
@@ -621,7 +660,7 @@ class steamUser {
         };
 
         const achievemtsDef = () => {
-          const statsDiv = this.$(".favoritegame_showcase").children(
+          const statsDiv = $(".favoritegame_showcase").children(
             ".game_info_stats"
           );
 
@@ -686,15 +725,12 @@ class steamUser {
    */
   getBasicProfile(x?: string): basicUserInfo {
     try {
-      if (x) {
-        this.res = x;
-        this.$ = load(this.res);
-      }
-      if (!this.$) {
+      if(!x&&!this){
         throw new Error("Steam html not found");
       }
-      const status = this.getStatus();
-      const { nickname, avatar, level, mainBadge } = this.getUserInfo();
+      const steam = new steamUser(x?x:this.res);
+      const status = steam.getStatus();
+      const { nickname, avatar, level, mainBadge } = steam.getUserInfo();
       const basicProfile = {
         status,
         userInfo: { nickname, avatar, level, mainBadge },
@@ -713,16 +749,13 @@ class steamUser {
    */
   getProfile(x?: string): User {
     try {
-      if (x) {
-        this.res = x;
-        this.$ = load(this.res);
-      }
-      if (!this.$) {
+      if(!x&&!this){
         throw new Error("Steam html not found");
       }
-      const status = this.getStatus();
-      const userInfo = this.getUserInfo();
-      const recentGames = this.getRecentGames();
+      const steam = new steamUser(x?x:this.res);
+      const status = steam.getStatus();
+      const userInfo = steam.getUserInfo();
+      const recentGames = steam.getRecentGames();
       const profile = {
         status,
         userInfo,
@@ -748,20 +781,17 @@ class steamUser {
     x?: string
   ): CostumeComponent {
     try {
-      if (x) {
-        this.res = x;
-        this.$ = load(this.res);
-      }
-      if (!this.$) {
+      if(!x&&!this){
         throw new Error("Steam html not found");
       }
+      const steam = new steamUser(x?x:this.res);
       const funcObj: UserObj = {
-        status: () => this.getStatus(),
-        userInfo: () => this.getUserInfo(),
-        recentGames: () => this.getRecentGames(),
+        status: () => steam.getStatus(),
+        userInfo: () => steam.getUserInfo(),
+        recentGames: () => steam.getRecentGames(),
       };
       const showCaseObj: ShowCaseObj = {
-        favoriteGame: () => this.getFavoriteGame(),
+        favoriteGame: () => steam.getFavoriteGame(),
       };
 
       const showcaseDef = (): ShowCaseComponents | null => {
