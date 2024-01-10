@@ -42,5 +42,5 @@ console.log(userDataWithouPlus)
 
 
 ## TO Do 
-- [ ] write test file
+- [x] write test file
 - [ ] add other special components
