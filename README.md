@@ -1,6 +1,7 @@
 # Steam Profile Api
 Get Steam profile data with cheerio
 
+
 ## Using
 ```JavaScript
 import SteamProfile from 'SteamProfile';
