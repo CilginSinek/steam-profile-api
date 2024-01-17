@@ -16,10 +16,6 @@
     "type": "git",
     "url": "git+https://github.com/CilginSinek/steam-profile-api"
   },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://npm.pkg.github.com/"
-  },
   "author": "CilginSinek",
   "license": "MIT",
   "devDependencies": {
