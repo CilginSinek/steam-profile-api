@@ -16,7 +16,7 @@ jobs:
           registry-url: 'https://npm.pkg.github.com/'
       - run: |
           cat << EOF > "$HOME/.npmrc"
-            //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
+            //npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN
           EOF
       - run: npm ci
       - run: npm publish
