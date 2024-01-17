@@ -1,5 +1,5 @@
 {
-  "name": "steam-profile-api",
+  "name": "@CilginSinek/steam-profile-api",
   "version": "1.0.0",
   "description": "get steam profile data with cheerio",
   "main": "./dist/index.js",
