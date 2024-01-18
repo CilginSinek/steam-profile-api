@@ -6,7 +6,9 @@ Get Steam profile data with cheerio
 ```JavaScript
 import SteamProfile from 'SteamProfile';
 
-const profile = new SteamProfile("SteamUrl");
+const steamHtml = await fetch("https://steamcommunity.com/id/"+steamid).then(res=>res.body.json())
+
+const profile = new SteamProfile(steamHtml);
 const StatusData = profile.getStatus();
 console.log(StatusData);
 // return status, status game information, status text
@@ -14,7 +16,10 @@ console.log(StatusData);
 or
 ```JavaScript
 import {getStatus} from 'SteamProfile';
-const StatusData = getStatus("SteamUrl");
+
+const steamHtml = await fetch("https://steamcommunity.com/id/"+steamid).then(res=>res.body.json())
+
+const StatusData = getStatus(steamHtml);
 console.log(StatusData);
 // return status, status game information, status text
 ```
@@ -31,11 +36,11 @@ console.log(StatusData);
 ```JavaScript
 import {getCostumeUser} from 'SteamProfile';
 
-const userDataWithPlus = getCostumeUser("+status","favoriteGame","SteamUrl");
+const userDataWithPlus = getCostumeUser("+status","favoriteGame","steamHtml");
 console.log(userDataWithPlus)
 // return UserComponents:status, ShowCaseComponents:favoriteGame
 
-const userDataWithouPlus = getCostumeUser("-userInfo, recentGames","favoriteGame","SteamUrl");
+const userDataWithouPlus = getCostumeUser("-userInfo, recentGames","favoriteGame","steamHtml");
 console.log(userDataWithouPlus) 
 // return UserComponents:status, ShowCaseComponents:favoriteGame
 ```
