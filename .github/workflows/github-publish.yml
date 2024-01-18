@@ -19,10 +19,8 @@ jobs:
       # - run: npm test
       - run : npm run build
       - run: |
-          cat << EOF > "$HOME/.npmrc"
-            //npm.pkg.github.com/:_authToken=$GITHUB_TOKEN
-          EOF
+          sed -i 's/"name": "steam-profile-api"/"name": "@CilginSinek\/steam-profile-api"/' package.json
       - uses: JS-DevTools/npm-publish@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          registry: "https://npm.pkg.github.com/@CilginSinek"
+          registry: "https://npm.pkg.github.com"
