@@ -18,6 +18,10 @@ jobs:
       - run: npm ci
       # - run: npm test
       - run : npm run build
+      - run: |
+          cat << EOF > "$HOME/.npmrc"
+            //npm.pkg.github.com/:_authToken=$GITHUB_TOKEN
+          EOF
       - uses: JS-DevTools/npm-publish@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
