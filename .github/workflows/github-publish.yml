@@ -1,8 +1,8 @@
 name: Github Package
 
 on:
-  push:
-    branches: master
+  release:
+    types: [created]
 
 jobs:
   publish:
