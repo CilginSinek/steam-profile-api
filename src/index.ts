@@ -302,7 +302,7 @@ class steamUser {
         if (badgeDivs.length > 0) {
           const badgeArray: Array<badge["iconLink"]> = [];
 
-          badgeDivs.each(function (_i: any, item: any) {
+          badgeDivs.each(function (this: any,_i: any, item: any) {
             const badgeIcon: string = $(this).children().children().attr("src");
             badgeArray.push(badgeIcon);
           });
@@ -392,7 +392,7 @@ class steamUser {
         const gameArray: Array<gameInfo> = [];
 
         const gameDivs = $(".recent_game_content");
-        gameDivs.each(function (_i: any, item: any) {
+        gameDivs.each(function (this: any,_i: any, item: any) {
           const name: string = $(this)
             .children()
             .first()
