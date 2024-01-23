@@ -31,9 +31,16 @@ class steamUser {
   res?: string;
   $: any;
   constructor(res?: string) {
-    if (res) {
-      this.res = res;
-      this.$ = load(this.res);
+    try{
+      if (res) {
+        this.res = res;
+        this.$ = load(this.res);
+        if(this.$(".profile_private_info").length == 1){
+          throw new Error("Steam profile is private");
+        }
+      }
+    }catch(e){
+      console.error(e)
     }
   }
 
@@ -42,8 +49,19 @@ class steamUser {
    * @param {string} res - The string to set as the 'steamHtml' property.
    */
   set setSteamHtml(res: string) {
-    this.res = res;
-    this.$ = load(this.res);
+    try{
+      if (res) {
+        this.res = res;
+        this.$ = load(this.res);
+        if(this.$(".profile_private_info").length == 1){
+          throw new Error("Steam profile is private");
+        }
+      }else{
+        throw new Error("Steam html not found");
+      }
+    }catch(e){
+      console.error(e)
+    }
   }
 
   /**
@@ -275,6 +293,10 @@ class steamUser {
       };
       const $ = $def();
 
+      if($(".profile_private_info").length == 1){
+        throw new Error("Steam profile is private");
+      }
+
       const name: string = $("bdi").first().text();
       const nickname: string = $(".actual_persona_name").first().text();
       const avatar: string = $(".playerAvatarAutoSizeInner")
@@ -392,7 +414,11 @@ class steamUser {
       };
       const $ = $def();
 
-      if ($(".recent_game_content")) {
+      if($(".profile_private_info").length == 1){
+        throw new Error("Steam profile is private");
+      }
+
+      if ($(".recent_games").length > 0 && $(".recent_games").children().length > 0) {
         const gameArray: Array<gameInfo> = [];
 
         const gameDivs = $(".recent_game_content");
@@ -572,8 +598,12 @@ class steamUser {
       };
       const $ = $def();
 
+      if($(".profile_private_info").length == 1){
+        throw new Error("Steam profile is private");
+      }
+
       const gameDiv = $(".favoritegame_showcase");
-      if (gameDiv) {
+      if (gameDiv.length > 0) {
         const name: string = gameDiv
           .children()
           .first()
