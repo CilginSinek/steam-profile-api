@@ -280,14 +280,18 @@ class steamUser {
       const avatar: string = $(".playerAvatarAutoSizeInner")
         .children()
         .attr("src");
-      const countryDef = () => {
-        const countryString: string = $(".header_real_name.ellipsis")
-          .text()
-          .trim()
-          .split("\n")[3]
-          .split("\t\t\t\t\t\t\t\t\t\t\t\t")[1];
-        if (countryString) {
-          return countryString;
+      const countryDef = (): string | null => {
+        const nameAndCountry = $(".header_real_name.ellipsis");
+        if (nameAndCountry.children().length > 1) {
+          if (nameAndCountry.children("bdi").text().trim().length > 0) {
+            return nameAndCountry
+              .text()
+              .trim()
+              .split("\n")[3]
+              .split("\t\t\t\t\t\t\t\t\t\t\t\t")[1];
+          } else {
+            return nameAndCountry.text().trim();
+          }
         } else {
           return null;
         }
@@ -302,7 +306,7 @@ class steamUser {
         if (badgeDivs.length > 0) {
           const badgeArray: Array<badge["iconLink"]> = [];
 
-          badgeDivs.each(function (this: any,_i: any, item: any) {
+          badgeDivs.each(function (this: any, _i: any, item: any) {
             const badgeIcon: string = $(this).children().children().attr("src");
             badgeArray.push(badgeIcon);
           });
@@ -392,7 +396,7 @@ class steamUser {
         const gameArray: Array<gameInfo> = [];
 
         const gameDivs = $(".recent_game_content");
-        gameDivs.each(function (this: any,_i: any, item: any) {
+        gameDivs.each(function (this: any, _i: any, item: any) {
           const name: string = $(this)
             .children()
             .first()
