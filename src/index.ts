@@ -278,7 +278,7 @@ class steamUser {
       const name: string = $("bdi").first().text();
       const nickname: string = $(".actual_persona_name").first().text();
       const avatar: string = $(".playerAvatarAutoSizeInner")
-        .children()
+        .children("img")
         .attr("src");
       const countryDef = (): string | null => {
         const nameAndCountry = $(".header_real_name.ellipsis");
