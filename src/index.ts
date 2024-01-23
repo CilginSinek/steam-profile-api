@@ -27,7 +27,7 @@ import {
  * @property {Function} getProfile {@link steamUser.getProfile} - Retrieve the user profile without showcase components. returns status, userInfo:{name, nickname, avatar, country, description, badges, mainBadge, level}.
  * @property {Function} getCostumeUser {@link steamUser.getCostumeUser} - Retrieves the costume user.
  */
-class steamUser {
+export default class steamUser {
   res?: string;
   $: any;
   constructor(res?: string) {
@@ -923,4 +923,4 @@ export const {
   getProfile,
   getCostumeUser,
 } = mySteamUser;
-export default steamUser;
+
