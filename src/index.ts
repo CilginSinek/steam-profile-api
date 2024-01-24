@@ -20,10 +20,10 @@ import {
  * @param {string} res The HTML response from the Steam user profile.
  * @property {Function} setSteamHtml {@link steamUser.setSteamHtml} - Set the 'res' property and initialize the '$'(cheerio load) property.
  * @property {Function} getStatus {@link steamUser.getStatus} - Retrieves the status information. gets status, status game information, and status text
- * @property {Function} getUserInfo {@link steamUser.getUserInfo} - Retrieves the user information from the Steam profile; returns {name, nickname, avatar, country, description, badges, mainBadge, level}.
+ * @property {Function} getUserInfo {@link steamUser.getUserInfo} - Retrieves the user information from the Steam profile; returns {name, nickname, avatar, avatarFrame, country, description, badges, mainBadge, level}.
  * @property {Function} getRecentGames {@link steamUser.getRecentGames} - Retrieves the recent games.returns [{name, appid, iconLink, playtime_forever, last_play, badge}]
  * @property {Function} getFavoriteGame {@link steamUser.getFavoriteGame} - Retrieves the favorite game.
- * @property {Function} getBasicProfile {@link steamUser.getBasicProfile} - Retrieves the basic profile. returns {status, userInfo:{nickname, avatar, level, mainBadge}}
+ * @property {Function} getBasicProfile {@link steamUser.getBasicProfile} - Retrieves the basic profile. returns {status, userInfo:{nickname, avatar, avatarFrame, level, mainBadge}}
  * @property {Function} getProfile {@link steamUser.getProfile} - Retrieve the user profile without showcase components. returns status, userInfo:{name, nickname, avatar, country, description, badges, mainBadge, level}.
  * @property {Function} getCostumeUser {@link steamUser.getCostumeUser} - Retrieves the costume user.
  */
@@ -31,16 +31,16 @@ export default class steamUser {
   res?: string;
   $: any;
   constructor(res?: string) {
-    try{
+    try {
       if (res) {
         this.res = res;
         this.$ = load(this.res);
-        if(this.$(".profile_private_info").length == 1){
+        if (this.$(".profile_private_info").length == 1) {
           throw new Error("Steam profile is private");
         }
       }
-    }catch(e){
-      console.error(e)
+    } catch (e) {
+      console.error(e);
     }
   }
 
@@ -49,18 +49,18 @@ export default class steamUser {
    * @param {string} res - The string to set as the 'steamHtml' property.
    */
   set setSteamHtml(res: string) {
-    try{
+    try {
       if (res) {
         this.res = res;
         this.$ = load(this.res);
-        if(this.$(".profile_private_info").length == 1){
+        if (this.$(".profile_private_info").length == 1) {
           throw new Error("Steam profile is private");
         }
-      }else{
+      } else {
         throw new Error("Steam html not found");
       }
-    }catch(e){
-      console.error(e)
+    } catch (e) {
+      console.error(e);
     }
   }
 
@@ -269,7 +269,7 @@ export default class steamUser {
   }
 
   /**
-   * Retrieves the user information from the Steam profile; returns {name, nickname, avatar, country, description, badges, mainBadge, level}.
+   * Retrieves the user information from the Steam profile; returns {name, nickname, avatar,avatarFrame, country, description, badges, mainBadge, level}.
    * @method getUserInfo
    * @param {string} x - (optional) The string to set as the 'steamHtml' property.(if use without class)
    * @return {userInfo} The user information object.
@@ -293,7 +293,7 @@ export default class steamUser {
       };
       const $ = $def();
 
-      if($(".profile_private_info").length == 1){
+      if ($(".profile_private_info").length == 1) {
         throw new Error("Steam profile is private");
       }
 
@@ -302,6 +302,17 @@ export default class steamUser {
       const avatar: string = $(".playerAvatarAutoSizeInner")
         .children("img")
         .attr("src");
+
+      const avatarFrameDef = (): string | null => {
+        const avatarFrame = $(".profile_avatar_frame");
+        if (avatarFrame.length < 0) {
+          return null;
+        }
+        return avatarFrame.children("img").attr("src");
+      };
+
+      const avatarFrame: string | null = avatarFrameDef();
+
       const countryDef = (): string | null => {
         const nameAndCountry = $(".header_real_name.ellipsis");
         if (nameAndCountry.children().length > 1) {
@@ -377,6 +388,7 @@ export default class steamUser {
         name: name,
         nickname: nickname,
         avatar: avatar,
+        avatarFrame: avatarFrame,
         country: country,
         description: description,
         badges: badges,
@@ -414,11 +426,14 @@ export default class steamUser {
       };
       const $ = $def();
 
-      if($(".profile_private_info").length == 1){
+      if ($(".profile_private_info").length == 1) {
         throw new Error("Steam profile is private");
       }
 
-      if ($(".recent_games").length > 0 && $(".recent_games").children().length > 0) {
+      if (
+        $(".recent_games").length > 0 &&
+        $(".recent_games").children().length > 0
+      ) {
         const gameArray: Array<gameInfo> = [];
 
         const gameDivs = $(".recent_game_content");
@@ -598,7 +613,7 @@ export default class steamUser {
       };
       const $ = $def();
 
-      if($(".profile_private_info").length == 1){
+      if ($(".profile_private_info").length == 1) {
         throw new Error("Steam profile is private");
       }
 
@@ -750,7 +765,7 @@ export default class steamUser {
   }
 
   /**
-   * Get the basic profile object containing the user's status, nickname, avatar, level, and main badge.
+   * Get the basic profile object containing the user's status, nickname, avatar,avatarFrame, level, and main badge.
    * @method getBasicProfile
    * @param {string} x - (optional) The string to set as the 'steamHtml' property.(if use without class)
    * @return {basicUserInfo} The basic profile object containing the user's status, nickname, avatar, level, and main badge.
@@ -762,10 +777,11 @@ export default class steamUser {
       }
       const steam = new steamUser(x ? x : this.res);
       const status = steam.getStatus();
-      const { nickname, avatar, level, mainBadge } = steam.getUserInfo();
+      const { nickname, avatar, avatarFrame, level, mainBadge } =
+        steam.getUserInfo();
       const basicProfile = {
         status,
-        userInfo: { nickname, avatar, level, mainBadge },
+        userInfo: { nickname, avatar, avatarFrame, level, mainBadge },
       };
       return basicProfile;
     } catch (error) {
@@ -923,4 +939,3 @@ export const {
   getProfile,
   getCostumeUser,
 } = mySteamUser;
-

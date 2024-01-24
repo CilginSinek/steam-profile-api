@@ -23,6 +23,7 @@ interface userInfo {
   name: string;
   nickname: string;
   avatar: string;
+  avatarFrame: string | null;
   country: string | null;
   description: string;
   badges: Array<badge["iconLink"]> | null;
@@ -34,6 +35,7 @@ interface basicUserInfo {
   userInfo: {
     nickname: userInfo["nickname"];
     avatar: userInfo["avatar"];
+    avatarFrame: userInfo["avatarFrame"];
     mainBadge: userInfo["mainBadge"];
     level: userInfo["level"];
   };
