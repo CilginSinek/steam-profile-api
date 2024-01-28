@@ -62,9 +62,6 @@ export class steamUserAsync {
    * @return {Promise<void>} A Promise that resolves once the initialization is complete.
    */
   async init(): Promise<void> {
-    if (this.html) {
-      return;
-    }
     const url =
       typeof this.id == "string"
         ? `https://steamcommunity.com/id/${this.id}`
