@@ -24,6 +24,7 @@ interface userInfo {
   nickname: string;
   avatar: string;
   avatarFrame: string | null;
+  background: backgroundObj | null;
   country: string | null;
   description: string;
   badges: Array<badge["iconLink"]> | null;
@@ -36,10 +37,16 @@ interface basicUserInfo {
     nickname: userInfo["nickname"];
     avatar: userInfo["avatar"];
     avatarFrame: userInfo["avatarFrame"];
+    background: userInfo["background"];
     mainBadge: userInfo["mainBadge"];
     level: userInfo["level"];
   };
 }
+
+interface backgroundObj{
+  [key: string]: string;
+}
+
 interface ShowCaseObj {
   [key: string]: Function;
 }
@@ -68,6 +75,7 @@ export type {
   statusType,
   userInfo,
   basicUserInfo,
+  backgroundObj,
   ShowCaseObj,
   ShowCaseComponents,
   UserObj,
