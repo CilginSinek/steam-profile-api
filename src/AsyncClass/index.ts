@@ -27,6 +27,7 @@ import axios from "axios";
  * @property {Function} getRecentGames {@link steamUserAsync.getRecentGamesAsync} - Retrieves the recent games.returns [{name, appid, iconLink, playtime_forever, last_play, badge}]
  * @property {Function} getFavoriteGame {@link steamUserAsync.getFavoriteGameAsync} - Retrieves the favorite game.
  * @property {Function} getBasicProfile {@link steamUserAsync.getBasicProfileAsync} - Retrieves the basic profile. returns {status, userInfo:{nickname, avatar, avatarFrame, level, mainBadge}}
+ * @property {Function} getMiniProfileId {@link steamUserAsync.getMiniProfileIdAsync} - Retrieves the mini profile id.
  * @property {Function} getProfile {@link steamUserAsync.getProfileAsync} - Retrieve the user profile without showcase components. returns status, userInfo:{name, nickname, avatar, country, description, badges, mainBadge, level}.
  * @property {Function} getCostumeUser {@link steamUserAsync.getCostumeUserAsync} - Retrieves the costume user.
  */

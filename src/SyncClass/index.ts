@@ -825,6 +825,8 @@ export class steamUser {
 
   /**
    * A function to get the mini profile ID.
+   * use like this basicProfile =  await axios.get(https://steamcommunity.com/miniprofile/+ getMiniProfileId()).then(res => res.data).then(data=>getBasicProfile("", data))
+   * or use getBasicProfileAsync
    *
    * @param {string} x - an optional string parameter
    * @return {number} the mini profile ID
