@@ -1135,6 +1135,99 @@ export class steamUserAsync {
   }
 
   /**
+   * Asynchronously gets the mini profile ID.
+   *
+   * @param {string} x - (optional) The string to set as the URL or ID or HTML property.(if use without class)
+   * @return {Promise<number>} a Promise that resolves to the mini profile ID
+   */
+  async getMiniProfileIdAsync (x?: string): Promise<number> {
+    try {
+      const $def = async (): Promise<CheerioAPI> => {
+        if (x) {
+          if (this !== undefined) {
+            this.setVarsAsync(x);
+            if (this.html) {
+              return load(this.html);
+            } else {
+              throw new Error("Steam profile not found");
+            }
+          } else {
+            if (typeof x == "string") {
+              if (x.startsWith("https://steamcommunity.com")) {
+                if (x.includes("id/")) {
+                  return load(
+                    await axios
+                      .get(`https://steamcommunity.com/id/${x.split("id/")[1]}`)
+                      .then((res) => res.data)
+                  );
+                } else if (x.includes("profiles/")) {
+                  return load(
+                    await axios
+                      .get(
+                        `https://steamcommunity.com/profiles/${
+                          x.split("profiles/")[1]
+                        }`
+                      )
+                      .then((res) => res.data)
+                  );
+                } else {
+                  throw new Error("Entered string is not a valid Steam URL");
+                }
+              } else {
+                const response = await axios.get(
+                  "https://steamcommunity.com/id/" + x
+                );
+                if (response.status != 200) {
+                  throw new Error("Steam profile not found");
+                }
+                return load(response.data);
+              }
+            } else if (typeof x == "number") {
+              return load(
+                await axios
+                  .get(`https://steamcommunity.com/profiles/${x}`)
+                  .then((res) => res.data)
+              );
+            } else {
+              throw new Error("Number or String expected");
+            }
+          }
+        } else {
+          if (this !== undefined) {
+            if (this.html) {
+              return load(this.html);
+            } else {
+              if (!this.id) {
+                throw new Error("Set Steam ID or HTML");
+              }
+              try {
+                await this.init();
+              } catch (e) {
+                throw e;
+              }
+              if (this.html) {
+                return load(this.html);
+              } else {
+                throw new Error("Steam profile not found");
+              }
+            }
+          } else {
+            throw new Error("Set Steam ID or HTML");
+          }
+        }
+      };
+      const $ = await $def();
+
+      const miniProfileId = parseInt(
+        $(".playerAvatar").attr("data-miniprofile")??"0"
+      );
+      return miniProfileId;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
    * Retrieve the user profile without showcase components. returns status, userInfo:{name, nickname, avatar, country, description, badges, mainBadge, level}
    * @method getProfile
    * @param {string} x - (optional) The string to set as the URL or ID or HTML property.(if use without class)
