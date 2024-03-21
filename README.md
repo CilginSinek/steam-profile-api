@@ -49,4 +49,5 @@ console.log(userDataWithouPlus)
 
 ## TO Do 
 - [x] write test file
+- [ ] write miniprofile functions
 - [ ] add other special components
